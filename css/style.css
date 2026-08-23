@@ -1,3 +1,7 @@
+/* =========================
+   CONFIGURAÇÕES GERAIS
+========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,47 +10,293 @@
 
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f7fb;
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================
+   PÁGINA INICIAL
+========================= */
+
+.inicio {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f4f6f8;
+    text-align: center;
+    padding: 20px;
 }
+
+.inicio h1 {
+    font-size: 42px;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.inicio p {
+    margin-bottom: 25px;
+    color: #64748b;
+}
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+button {
+    border: none;
+    background-color: #2563eb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
 
 .login-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    margin: 80px auto;
     background-color: white;
     padding: 35px;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .login-container h1 {
     text-align: center;
+    color: #2563eb;
     margin-bottom: 10px;
 }
 
 .login-container p {
     text-align: center;
-    margin-bottom: 30px;
+    color: #64748b;
+    margin-bottom: 25px;
 }
+
+
+/* =========================
+   FORMULÁRIOS
+========================= */
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-input {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+label {
+    font-weight: bold;
+    margin-top: 8px;
 }
 
-button {
-    margin-top: 10px;
+input,
+textarea,
+select {
+    width: 100%;
     padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #2563eb;
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+    background-color: #2563eb;
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topo h1 {
+    font-size: 24px;
+}
+
+.topo a {
+    color: white;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.dashboard h2 {
+    margin-bottom: 10px;
+}
+
+.dashboard > p {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card h3 {
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.acoes {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.acoes h2 {
+    margin-bottom: 20px;
+}
+
+.acoes a {
+    margin-right: 10px;
+}
+
+
+/* =========================
+   FORMULÁRIO DE ATENDIMENTO
+========================= */
+
+.form-container {
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.form-container h2 {
+    margin-bottom: 10px;
+}
+
+.form-container p {
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   HISTÓRICO
+========================= */
+
+.historico {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.historico > p {
+    color: #64748b;
+    margin: 10px 0 25px;
+}
+
+.tabela-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background-color: #f8fafc;
+}
+
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 700px) {
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .topo {
+        padding: 15px 20px;
+    }
+
+    .dashboard,
+    .historico,
+    .form-container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .login-container {
+        margin: 30px 15px;
+    }
+
 }
