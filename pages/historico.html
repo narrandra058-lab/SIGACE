@@ -3,36 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SIGACE - Histórico</title>
+
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1>Histórico de Atendimentos</h1>
+    <header class="topo">
+        <h1>SIGACE</h1>
 
-    <p>Consulte os atendimentos registrados no SIGACE.</p>
+        <a href="dashboard.html">
+            Voltar ao painel
+        </a>
+    </header>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Assunto</th>
-                <th>Status</th>
-                <th>Data</th>
-            </tr>
-        </thead>
+    <main class="historico">
 
-        <tbody id="listaAtendimentos">
-            <tr>
-                <td colspan="4">Nenhum atendimento registrado.</td>
-            </tr>
-        </tbody>
-    </table>
+        <h2>Histórico de Atendimentos</h2>
 
-    <br>
+        <p>
+            Consulte os atendimentos registrados no sistema.
+        </p>
 
-    <a href="dashboard.html">Voltar ao painel</a>
+        <div class="tabela-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Assunto</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+
+                <tbody id="listaAtendimentos">
+
+                    <tr>
+                        <td colspan="4">
+                            Nenhum atendimento registrado.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
 
     <script src="../js/script.js"></script>
 
