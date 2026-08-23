@@ -3,39 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SIGACE - Painel</title>
+
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1>Painel SIGACE</h1>
+    <header class="topo">
+        <h1>SIGACE</h1>
 
-    <p>Bem-vindo ao Sistema de Gestão e Atendimento ao Cliente.</p>
+        <a href="../index.html">
+            Sair
+        </a>
+    </header>
 
-    <nav>
-        <a href="atendimento.html">Novo Atendimento</a>
-        <a href="historico.html">Histórico</a>
-    </nav>
+    <main class="dashboard">
 
-    <section>
-        <h2>Resumo</h2>
+        <h2>Painel Inicial</h2>
 
-        <div>
-            <h3>Atendimentos</h3>
-            <p>0</p>
-        </div>
+        <p>
+            Bem-vindo ao Sistema de Gestão e Atendimento ao Cliente.
+        </p>
 
-        <div>
-            <h3>Em andamento</h3>
-            <p>0</p>
-        </div>
+        <section class="cards">
 
-        <div>
-            <h3>Finalizados</h3>
-            <p>0</p>
-        </div>
-    </section>
+            <div class="card">
+                <h3>Atendimentos</h3>
+                <p id="totalAtendimentos">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Em andamento</h3>
+                <p id="atendimentosAndamento">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Finalizados</h3>
+                <p id="atendimentosFinalizados">0</p>
+            </div>
+
+        </section>
+
+        <section class="acoes">
+
+            <h2>Ações</h2>
+
+            <a href="atendimento.html">
+                <button type="button">
+                    Novo Atendimento
+                </button>
+            </a>
+
+            <a href="historico.html">
+                <button type="button">
+                    Ver Histórico
+                </button>
+            </a>
+
+        </section>
+
+    </main>
+
+    <script src="../js/script.js"></script>
 
 </body>
 </html>
