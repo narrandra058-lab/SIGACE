@@ -1,8 +1,36 @@
-// Cadastro de atendimento
-const form = document.getElementById("formAtendimento");
+// ==========================================
+// LOGIN
+// ==========================================
 
-if (form) {
-    form.addEventListener("submit", function(event) {
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const senha = document.getElementById("senha").value;
+
+        if (email.trim() === "" || senha.trim() === "") {
+            alert("Preencha o e-mail e a senha.");
+            return;
+        }
+
+        localStorage.setItem("usuarioLogado", "true");
+
+        window.location.href = "dashboard.html";
+    });
+}
+
+
+// ==========================================
+// CADASTRO DE ATENDIMENTO
+// ==========================================
+
+const formAtendimento = document.getElementById("formAtendimento");
+
+if (formAtendimento) {
+    formAtendimento.addEventListener("submit", function (event) {
         event.preventDefault();
 
         const atendimento = {
@@ -27,26 +55,30 @@ if (form) {
 
         alert("Atendimento registrado com sucesso!");
 
-        form.reset();
+        formAtendimento.reset();
 
         window.location.href = "historico.html";
     });
 }
 
 
-// Exibição do histórico
-const lista = document.getElementById("listaAtendimentos");
+// ==========================================
+// HISTÓRICO
+// ==========================================
 
-if (lista) {
+const listaAtendimentos =
+    document.getElementById("listaAtendimentos");
+
+if (listaAtendimentos) {
 
     const atendimentos =
         JSON.parse(localStorage.getItem("atendimentos")) || [];
 
-    lista.innerHTML = "";
+    listaAtendimentos.innerHTML = "";
 
     if (atendimentos.length === 0) {
 
-        lista.innerHTML = `
+        listaAtendimentos.innerHTML = `
             <tr>
                 <td colspan="4">
                     Nenhum atendimento registrado.
@@ -56,7 +88,7 @@ if (lista) {
 
     } else {
 
-        atendimentos.forEach(function(atendimento) {
+        atendimentos.forEach(function (atendimento) {
 
             const linha = document.createElement("tr");
 
@@ -67,7 +99,52 @@ if (lista) {
                 <td>${atendimento.data}</td>
             `;
 
-            lista.appendChild(linha);
+            listaAtendimentos.appendChild(linha);
         });
     }
+}
+
+
+// ==========================================
+// DASHBOARD
+// ==========================================
+
+const totalAtendimentos =
+    document.getElementById("totalAtendimentos");
+
+const atendimentosAndamento =
+    document.getElementById("atendimentosAndamento");
+
+const atendimentosFinalizados =
+    document.getElementById("atendimentosFinalizados");
+
+if (
+    totalAtendimentos &&
+    atendimentosAndamento &&
+    atendimentosFinalizados
+) {
+
+    const atendimentos =
+        JSON.parse(localStorage.getItem("atendimentos")) || [];
+
+    const emAndamento = atendimentos.filter(
+        function (atendimento) {
+            return atendimento.status === "Em andamento";
+        }
+    );
+
+    const finalizados = atendimentos.filter(
+        function (atendimento) {
+            return atendimento.status === "Finalizado";
+        }
+    );
+
+    totalAtendimentos.textContent =
+        atendimentos.length;
+
+    atendimentosAndamento.textContent =
+        emAndamento.length;
+
+    atendimentosFinalizados.textContent =
+        finalizados.length;
 }
