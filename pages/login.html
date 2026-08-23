@@ -3,25 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SIGACE - Login</title>
+
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1>SIGACE</h1>
+    <main class="login-container">
 
-    <p>Sistema de Gestão e Atendimento ao Cliente</p>
+        <h1>SIGACE</h1>
 
-    <form>
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="Digite seu e-mail">
+        <p>Faça login para acessar o sistema</p>
 
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" placeholder="Digite sua senha">
+        <form id="loginForm">
 
-        <button type="submit">Entrar</button>
-    </form>
+            <label for="email">
+                E-mail
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+                required
+            >
+
+            <label for="senha">
+                Senha
+            </label>
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                required
+            >
+
+            <button type="submit">
+                Entrar
+            </button>
+
+        </form>
+
+        <a href="../index.html">
+            Voltar
+        </a>
+
+    </main>
+
+    <script src="../js/script.js"></script>
 
 </body>
 </html>
