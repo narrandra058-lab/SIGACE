@@ -266,7 +266,21 @@ app.get("/dashboard", (req, res) => {
         }
     );
 });
+// 10. Relatório de atendimentos
+app.get("/relatorios/atendimentos", (req, res) => {
+    gerarRelatorioAtendimentos((erro, atendimentos) => {
+        if (erro) {
+            return res.status(500).json({
+                erro: "Erro ao gerar relatório de atendimentos."
+            });
+        }
 
+        res.json({
+            total: atendimentos.length,
+            atendimentos
+        });
+    });
+});
 const PORT = 3000;
 
 app.listen(PORT, () => {
