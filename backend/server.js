@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./db");
-
+const { gerarRelatorioAtendimentos } = require("./relatorios");
 const app = express();
 
 app.use(cors());
