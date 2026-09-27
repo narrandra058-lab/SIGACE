@@ -198,13 +198,43 @@ app.post("/servidores", (req, res) => {
         });
     }
 
-    res.status(201).json({
-        mensagem: "Servidor recebido pela API.",
-        nm_servidor
-    });
+    db.run(
+        `INSERT INTO SERVIDOR (NM_SERVIDOR)
+         VALUES (?)`,
+        [nm_servidor],
+        function (erro) {
+            if (erro) {
+                return res.status(500).json({
+                    erro: "Erro ao cadastrar servidor."
+                });
+            }
+
+            res.status(201).json({
+                mensagem: "Servidor cadastrado com sucesso.",
+                id: this.lastID
+            });
+        }
+    );
 });
 
-// 8. Dashboard com indicadores
+// 8. Consultar servidores
+app.get("/servidores", (req, res) => {
+    db.all(
+        `SELECT * FROM SERVIDOR ORDER BY NM_SERVIDOR`,
+        [],
+        (erro, servidores) => {
+            if (erro) {
+                return res.status(500).json({
+                    erro: "Erro ao consultar servidores."
+                });
+            }
+
+            res.json(servidores);
+        }
+    );
+});
+
+// 9. Dashboard com indicadores
 app.get("/dashboard", (req, res) => {
     db.get(
         `SELECT COUNT(*) AS total_eleitores FROM ELEITOR`,
