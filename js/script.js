@@ -1,4 +1,11 @@
 // ==========================================
+// CONFIGURAÇÃO DA API
+// ==========================================
+
+const API_URL = "http://localhost:3000";
+
+
+// ==========================================
 // LOGIN
 // ==========================================
 
@@ -30,34 +37,74 @@ if (loginForm) {
 const formAtendimento = document.getElementById("formAtendimento");
 
 if (formAtendimento) {
-    formAtendimento.addEventListener("submit", function (event) {
+    formAtendimento.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const atendimento = {
-            nome: document.getElementById("nome").value,
-            email: document.getElementById("email").value,
-            telefone: document.getElementById("telefone").value,
-            assunto: document.getElementById("assunto").value,
-            descricao: document.getElementById("descricao").value,
-            status: document.getElementById("status").value,
-            data: new Date().toLocaleDateString("pt-BR")
-        };
+        const nome = document.getElementById("nome").value;
+        const assunto = document.getElementById("assunto").value;
+        const status = document.getElementById("status").value;
 
-        let atendimentos =
-            JSON.parse(localStorage.getItem("atendimentos")) || [];
+        if (nome.trim() === "" || assunto.trim() === "") {
+            alert("Preencha os dados obrigatórios.");
+            return;
+        }
 
-        atendimentos.push(atendimento);
+        try {
+            // Primeiro cadastra o eleitor
+            const respostaEleitor = await fetch(`${API_URL}/eleitores`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nm_eleitor: nome
+                })
+            });
 
-        localStorage.setItem(
-            "atendimentos",
-            JSON.stringify(atendimentos)
-        );
+            const eleitor = await respostaEleitor.json();
 
-        alert("Atendimento registrado com sucesso!");
+            if (!respostaEleitor.ok) {
+                throw new Error(eleitor.erro || "Erro ao cadastrar eleitor.");
+            }
 
-        formAtendimento.reset();
+            // Depois registra o atendimento
+            const respostaAtendimento = await fetch(
+                `${API_URL}/atendimentos`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id_eleitor: eleitor.id,
+                        tp_atendimento: assunto,
+                        st_atendimento: status || "Pendente"
+                    })
+                }
+            );
 
-        window.location.href = "historico.html";
+            const atendimento = await respostaAtendimento.json();
+
+            if (!respostaAtendimento.ok) {
+                throw new Error(
+                    atendimento.erro || "Erro ao registrar atendimento."
+                );
+            }
+
+            alert("Atendimento registrado com sucesso!");
+
+            formAtendimento.reset();
+
+            window.location.href = "historico.html";
+
+        } catch (erro) {
+            alert(
+                "Não foi possível registrar o atendimento. " +
+                "Verifique se a API está em execução."
+            );
+
+            console.error(erro);
+        }
     });
 }
 
@@ -71,37 +118,65 @@ const listaAtendimentos =
 
 if (listaAtendimentos) {
 
-    const atendimentos =
-        JSON.parse(localStorage.getItem("atendimentos")) || [];
+    async function carregarHistorico() {
 
-    listaAtendimentos.innerHTML = "";
+        try {
+            const resposta = await fetch(
+                `${API_URL}/atendimentos`
+            );
 
-    if (atendimentos.length === 0) {
+            const atendimentos = await resposta.json();
 
-        listaAtendimentos.innerHTML = `
-            <tr>
-                <td colspan="4">
-                    Nenhum atendimento registrado.
-                </td>
-            </tr>
-        `;
+            listaAtendimentos.innerHTML = "";
 
-    } else {
+            if (atendimentos.length === 0) {
 
-        atendimentos.forEach(function (atendimento) {
+                listaAtendimentos.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            Nenhum atendimento registrado.
+                        </td>
+                    </tr>
+                `;
 
-            const linha = document.createElement("tr");
+                return;
+            }
 
-            linha.innerHTML = `
-                <td>${atendimento.nome}</td>
-                <td>${atendimento.assunto}</td>
-                <td>${atendimento.status}</td>
-                <td>${atendimento.data}</td>
+            atendimentos.forEach(function (atendimento) {
+
+                const linha = document.createElement("tr");
+
+                const data = atendimento.DT_ATENDIMENTO
+                    ? new Date(
+                        atendimento.DT_ATENDIMENTO
+                    ).toLocaleDateString("pt-BR")
+                    : "-";
+
+                linha.innerHTML = `
+                    <td>${atendimento.NM_ELEITOR}</td>
+                    <td>${atendimento.TP_ATENDIMENTO}</td>
+                    <td>${atendimento.ST_ATENDIMENTO}</td>
+                    <td>${data}</td>
+                `;
+
+                listaAtendimentos.appendChild(linha);
+            });
+
+        } catch (erro) {
+
+            console.error(erro);
+
+            listaAtendimentos.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Não foi possível carregar o histórico.
+                    </td>
+                </tr>
             `;
-
-            listaAtendimentos.appendChild(linha);
-        });
+        }
     }
+
+    carregarHistorico();
 }
 
 
@@ -124,27 +199,55 @@ if (
     atendimentosFinalizados
 ) {
 
-    const atendimentos =
-        JSON.parse(localStorage.getItem("atendimentos")) || [];
+    async function carregarDashboard() {
 
-    const emAndamento = atendimentos.filter(
-        function (atendimento) {
-            return atendimento.status === "Em andamento";
+        try {
+
+            const resposta = await fetch(
+                `${API_URL}/dashboard`
+            );
+
+            const dados = await resposta.json();
+
+            totalAtendimentos.textContent =
+                dados.total_atendimentos;
+
+            const respostaHistorico = await fetch(
+                `${API_URL}/atendimentos`
+            );
+
+            const atendimentos =
+                await respostaHistorico.json();
+
+            const emAndamento = atendimentos.filter(
+                function (atendimento) {
+                    return atendimento.ST_ATENDIMENTO ===
+                        "Em andamento";
+                }
+            );
+
+            const finalizados = atendimentos.filter(
+                function (atendimento) {
+                    return atendimento.ST_ATENDIMENTO ===
+                        "Finalizado";
+                }
+            );
+
+            atendimentosAndamento.textContent =
+                emAndamento.length;
+
+            atendimentosFinalizados.textContent =
+                finalizados.length;
+
+        } catch (erro) {
+
+            console.error(erro);
+
+            totalAtendimentos.textContent = "0";
+            atendimentosAndamento.textContent = "0";
+            atendimentosFinalizados.textContent = "0";
         }
-    );
+    }
 
-    const finalizados = atendimentos.filter(
-        function (atendimento) {
-            return atendimento.status === "Finalizado";
-        }
-    );
-
-    totalAtendimentos.textContent =
-        atendimentos.length;
-
-    atendimentosAndamento.textContent =
-        emAndamento.length;
-
-    atendimentosFinalizados.textContent =
-        finalizados.length;
+    carregarDashboard();
 }
